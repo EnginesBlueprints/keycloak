@@ -16,7 +16,7 @@
         "patch": 0
       }
     },
-    "timestamp": "2019-07-08T17:00:06+10:00"
+    "timestamp": "2019-07-08T17:50:19+10:00"
   },
   "software": {
     "base": {
@@ -43,6 +43,22 @@
         "destination": "/home/app/keycloak",
         "extraction_command": "tar -xzpf ",
         "path_to_extracted": "keycloak-6.0.1"
+      }
+    ],
+    "service_configurations": [
+      {
+        "publisher_namespace": "EnginesSystem",
+        "type_path": "filesystem/local/filesystem",
+        "variables": {
+          "service_name": "_Engines_Builder(engine_name)",
+          "volume_src": "",
+          "engine_path": "/home/app/keycloak/standalone/data",
+          "permissions": "rw",
+          "user": "_Engines_Builder(cont_user_id)",
+          "group": "_Engines_Builder(data_gid)",
+          "fw_user": "_Engines_Builder(cont_user_id)",
+          "exclude_from_backup": "false"
+        }
       }
     ]
   }
