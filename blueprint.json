@@ -16,12 +16,12 @@
         "patch": 0
       }
     },
-    "timestamp": "2019-07-08T16:55:04+10:00"
+    "timestamp": "2019-07-08T17:00:06+10:00"
   },
   "software": {
     "base": {
       "name": "keycloak",
-      "framework": "openjdk9",
+      "framework": "openjdk8",
       "deployment_type": "web",
       "http_protocol": "https_only",
       "memory": {
