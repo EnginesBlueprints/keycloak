@@ -15,12 +15,35 @@
         "level": "alpha",
         "patch": 0
       }
-    }
+    },
+    "timestamp": "2019-07-08T16:55:04+10:00"
   },
   "software": {
     "base": {
+      "name": "keycloak",
+      "framework": "openjdk9",
       "deployment_type": "web",
-      "http_protocol": "https_and_http"
-    }
+      "http_protocol": "https_only",
+      "memory": {
+        "required": 768,
+        "recommended": 1024
+      }
+    },
+    "scripts": {
+      "start": {
+        "language": "sh",
+        "content": "#!/bin/sh\r\n\r\ncd /home/app/keycloak\r\nbin/standalone.sh  --server-config=standalone.xml\r\n\r\nsleep 3600"
+      }
+    },
+    "installed_packages": [
+      {
+        "name": "keycloak-6.0.1.tar.gz",
+        "download_type": "http(s)",
+        "source_url": "https://downloads.jboss.org/keycloak/6.0.1/keycloak-6.0.1.tar.gz",
+        "destination": "/home/app/keycloak",
+        "extraction_command": "tar -xzpf ",
+        "path_to_extracted": "keycloak-6.0.1"
+      }
+    ]
   }
 }
