@@ -16,7 +16,7 @@
         "patch": 0
       }
     },
-    "timestamp": "2019-09-28T12:01:22+10:00"
+    "timestamp": "2019-09-28T12:32:42+10:00"
   },
   "software": {
     "base": {
@@ -34,6 +34,10 @@
       "start": {
         "language": "sh",
         "content": "#!/bin/sh\r\n\r\ncd /home/app/keycloak\r\nbin/standalone.sh  --server-config=standalone.xml\r\n\r\nsleep 3600"
+      },
+      "first_run": {
+        "language": "sh",
+        "content": "#!/bin\r\n\r\nif test -f /home/fs/config/.initpassword\r\n then\r\n    username=admin password=`cat /home/app/keycloak/standalone/` /home/engines/scripts/actionators/add_kc_user.sh\r\n     if test $? -e 0\r\n      then\r\n         rm /home/fs/config/.initpassword\r\n      fi     \r\nfi\r\n    "
       }
     },
     "installed_packages": [
@@ -74,6 +78,33 @@
           "fw_user": "_Engines_Builder(cont_user_id)",
           "exclude_from_backup": "false"
         }
+      },
+      {
+        "publisher_namespace": "EnginesSystem",
+        "type_path": "filesystem/local/filesystem",
+        "variables": {
+          "service_name": "config",
+          "volume_src": "",
+          "engine_path": "",
+          "permissions": "rw",
+          "user": "_Engines_Builder(cont_user_id)",
+          "group": "_Engines_Builder(data_gid)",
+          "fw_user": "_Engines_Builder(cont_user_id)",
+          "exclude_from_backup": "false"
+        }
+      }
+    ],
+    "environment_variables": [
+      {
+        "name": "initial_password",
+        "value": "_Engines_Builder(random(9))",
+        "mandatory": true,
+        "ask_at_build_time": true,
+        "build_time_only": true,
+        "input": {
+          "type": "password_with_confirmation",
+          "label": "Initial admin password"
+        }
       }
     ],
     "template_files": [
@@ -86,6 +117,37 @@
       {
         "path": "/home/app/keycloak/standalone/log",
         "volume_name": "log"
+      },
+      {
+        "path": "/home/app/keycloak/standalone/configuration",
+        "volume_name": "config"
+      }
+    ],
+    "actionators": [
+      {
+        "name": "add_kc_user",
+        "label": "Add keycloak user",
+        "return_type": "plain_text",
+        "variables": [
+          {
+            "name": "username",
+            "mandatory": true,
+            "input": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "mandatory": true,
+            "input": {
+              "type": "password_with_confirmation"
+            }
+          }
+        ],
+        "script": {
+          "language": "sh",
+          "content": "#!/usr/bin/expect\r\n\r\nset timeout 20\r\nspawn  /home/app/keycloak/bin/add-user-keycloak.sh -u $env(username)\r\nexpect \"Password:\" { send \"$env(password)\\r\" }\r\n\r\nexpect  eof\r\n\r\nspawn touch /home/engines/run/flags/restart_required\r\n\r\nexpect  eof"
+        }
       }
     ]
   }
