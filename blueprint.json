@@ -16,7 +16,7 @@
         "patch": 0
       }
     },
-    "timestamp": "2019-09-28T12:35:48+10:00"
+    "timestamp": "2019-09-28T12:50:16+10:00"
   },
   "software": {
     "base": {
@@ -35,9 +35,12 @@
         "language": "sh",
         "content": "#!/bin/sh\r\n\r\ncd /home/app/keycloak\r\n\r\nbin/standalone.sh  --server-config=standalone.xml &\r\n\r\n"
       },
+      "install": {
+        "content": "#!/bin/sh\r\n\r\necho $initial_password > /home/fs/config/.initpassword"
+      },
       "first_run": {
         "language": "sh",
-        "content": "#!/bin\r\n\r\nif test -f /home/fs/config/.initpassword\r\n then\r\n    username=admin password=`cat /home/app/keycloak/standalone/` /home/engines/scripts/actionators/add_kc_user.sh\r\n     if test $? -e 0\r\n      then\r\n         rm /home/fs/config/.initpassword\r\n      fi     \r\nfi\r\n    "
+        "content": "#!/bin\r\n\r\nif test -f /home/fs/config/.initpassword\r\n then\r\n    username=admin password=`cat /home/fs/config/.initpassword` /home/engines/scripts/actionators/add_kc_user.sh\r\n     if test $? -e 0\r\n      then\r\n         rm /home/fs/config/.initpassword\r\n      fi     \r\nfi\r\n    "
       }
     },
     "installed_packages": [
