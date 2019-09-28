@@ -16,7 +16,7 @@
         "patch": 0
       }
     },
-    "timestamp": "2019-09-28T11:30:31+10:00"
+    "timestamp": "2019-09-28T11:48:03+10:00"
   },
   "software": {
     "base": {
@@ -24,6 +24,7 @@
       "framework": "openjdk8",
       "deployment_type": "web",
       "http_protocol": "https_only",
+      "framework_port_override": 8080,
       "memory": {
         "required": 768,
         "recommended": 1024
